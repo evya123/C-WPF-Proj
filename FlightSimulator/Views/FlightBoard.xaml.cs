@@ -48,7 +48,6 @@ namespace FlightSimulator.Views
                 planeLocations.AppendAsync(Dispatcher, p1);
             }
         }
-
     }
 
 }
