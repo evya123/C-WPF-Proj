@@ -3,14 +3,34 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-
 namespace FlightSimulator
 {
+    public delegate string DataHandler(string str);
     public class TcpServer
     {
-        public void Run(string address, int port)
+        private DataHandler _myEvent;
+
+        public event DataHandler MyEvent
         {
-            var listener = new TcpListener(IPAddress.Parse(address), port);
+            add
+            {
+                lock (this)
+                {
+                    _myEvent += value;
+                }
+            }
+            remove
+            {
+                lock (this)
+                {
+                    _myEvent -= value;
+                }
+            }
+        }
+
+        public void Run(int port)
+        {
+            var listener = new TcpListener(IPAddress.Any, port);
             Console.WriteLine("Waiting for connection.....");
             listener.Start();
             while (true)
@@ -25,13 +45,14 @@ namespace FlightSimulator
                     var responsewriter = new StreamWriter(netstream) { AutoFlush = true };
                     while (true)
                     {
-                        if (IsDisconnected(tcpclient))
-                            throw new Exception("Client disconnected gracefully");
+                        if (IsDisconnected(tcpclient)) { 
+                            Console.WriteLine("Client disconnected gracefully");
+                            break;
+                        }
                         if (netstream.DataAvailable)             // handle scenario where client is not done yet, and DataAvailable is false. This is not part of the tcp protocol.
                         {
                             string request = Read(netstream);
-                            Console.WriteLine("Client sent: " + request);
-                            responsewriter.Write("You sent: " + request);
+                            _myEvent.Invoke(request);
                         }
                     }
                 }
@@ -40,6 +61,11 @@ namespace FlightSimulator
                     netstream.Close();
                     tcpclient.Close();
                     Console.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    netstream.Close();
+                    tcpclient.Close();
                 }
             }
         }

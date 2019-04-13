@@ -24,13 +24,23 @@ namespace FlightSimulator
         public MainWindow()
         {
             InitializeComponent();
+
             var asyncserver = new TcpServer();
-            asyncserver.Run("127.0.0.1", 5400);
+            asyncserver.MyEvent += Asyncserver_MyEvent;
+            asyncserver.Run(5400);
         }
 
         private void TabControl_Loaded(object sender, RoutedEventArgs e)
         {
 
         }
+
+
+        private string Asyncserver_MyEvent(string str)
+        {
+            Console.WriteLine(str);
+            return "";
+        }
     }
 }
+
