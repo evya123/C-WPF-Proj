@@ -4,9 +4,48 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="450">
     <Grid>
-        <Canvas  x:Name="Base" Margin="0" Width="340" Height="340">
+        <Grid.Resources>
+            <Style TargetType="TextBlock" x:Key="LabelStyle">
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="Margin" Value="4" />
+            </Style>
+            <RotateTransform x:Key="rotate" Angle="90"/>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Style="{StaticResource LabelStyle}" LayoutTransform="{StaticResource rotate}" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1">elevator</TextBlock>
+
+        <DockPanel HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0">
+            <Label FontWeight="Bold" HorizontalAlignment="Center" FontSize="16">aileron</Label>
+        </DockPanel>
+        <TextBlock Text="{Binding ElementName=, Path=Value, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2"  FontSize="16" FontWeight="Bold"/>
+        
+        <DockPanel Grid.Column="0" Grid.Row="1" LayoutTransform="{StaticResource rotate}">
+            <Label DockPanel.Dock="Bottom" FontWeight="Bold" HorizontalAlignment="Center" FontSize="16">throttle</Label>
+            <TextBlock Text="{Binding ElementName=throttle_bar, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Left" TextAlignment="Center" Margin="0,0,10,10" FontSize="16" FontWeight="Bold"/>
+            <Slider Name="throttle_bar" IsSnapToTickEnabled="True" Minimum="-1" Maximum="1" Value="0" TickFrequency="0.1" Width="Auto" TickPlacement="Both"/>
+        </DockPanel>
+        
+        <DockPanel VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Margin="10">
+            <Label DockPanel.Dock="Bottom" FontWeight="Bold" HorizontalAlignment="Center" Margin="-30" FontSize="16">rudder</Label>
+            <TextBlock Text="{Binding ElementName=Rudder_bar, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Center" Margin="10,10,0,0" FontSize="16" FontWeight="Bold"/>
+            <Slider Name="Rudder_bar" IsSnapToTickEnabled="True" Orientation="Horizontal" Minimum="-1" Maximum="1" Value="0" TickFrequency="0.1" Height="68"  TickPlacement="Both"/>
+        </DockPanel>
+
+        <Canvas  x:Name="Base" Margin="0" Width="340" Height="340" Grid.Row="1" Grid.Column="1">
             <Ellipse HorizontalAlignment="Left" Height="340" VerticalAlignment="Top" Width="340">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
