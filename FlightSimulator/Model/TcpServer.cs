@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 namespace FlightSimulator
 {
     public delegate string DataHandler(string str);
@@ -33,41 +34,45 @@ namespace FlightSimulator
             var listener = new TcpListener(IPAddress.Any, port);
             Console.WriteLine("Waiting for connection.....");
             listener.Start();
-            while (true)
-            {
-                TcpClient tcpclient = null;
-                NetworkStream netstream = null;
-                try
+            Thread thread = new Thread(() => {
+                while (true)
                 {
-                    tcpclient = listener.AcceptTcpClient();
-                    Console.WriteLine("Client connected from " + tcpclient.Client.LocalEndPoint.ToString());
-                    netstream = tcpclient.GetStream();
-                    var responsewriter = new StreamWriter(netstream) { AutoFlush = true };
-                    while (true)
+                    TcpClient tcpclient = null;
+                    NetworkStream netstream = null;
+                    try
                     {
-                        if (IsDisconnected(tcpclient)) { 
-                            Console.WriteLine("Client disconnected gracefully");
-                            break;
-                        }
-                        if (netstream.DataAvailable)             // handle scenario where client is not done yet, and DataAvailable is false. This is not part of the tcp protocol.
+                        tcpclient = listener.AcceptTcpClient();
+                        Console.WriteLine("Client connected from " + tcpclient.Client.LocalEndPoint.ToString());
+                        netstream = tcpclient.GetStream();
+                        var responsewriter = new StreamWriter(netstream) { AutoFlush = true };
+                        while (true)
                         {
-                            string request = Read(netstream);
-                            _myEvent.Invoke(request);
+                            if (IsDisconnected(tcpclient))
+                            {
+                                Console.WriteLine("Client disconnected gracefully");
+                                break;
+                            }
+                            if (netstream.DataAvailable)             // handle scenario where client is not done yet, and DataAvailable is false. This is not part of the tcp protocol.
+                            {
+                                string request = Read(netstream);
+                                _myEvent.Invoke(request);
+                            }
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        netstream.Close();
+                        tcpclient.Close();
+                        Console.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
+                        netstream.Close();
+                        tcpclient.Close();
+                    }
                 }
-                catch (Exception ex)
-                {
-                    netstream.Close();
-                    tcpclient.Close();
-                    Console.WriteLine(ex.Message);
-                }
-                finally
-                {
-                    netstream.Close();
-                    tcpclient.Close();
-                }
-            }
+            });
+            thread.Start();
         }
 
         private bool IsDisconnected(TcpClient tcp)
