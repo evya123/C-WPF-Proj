@@ -24,5 +24,20 @@ namespace FlightSimulator.Views
         {
             InitializeComponent();
         }
+
+        private void ClickConnect(object sender, RoutedEventArgs e)
+        {
+            //TODO
+        }
+
+        private void ClickSettings(object sender, RoutedEventArgs e)
+        {
+            //TODO
+        }
+
+        private void FlightBoard_Loaded(object sender, RoutedEventArgs e)
+        {
+            //TODO
+        }
     }
 }

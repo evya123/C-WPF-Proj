@@ -37,6 +37,6 @@
                     HorizontalAlignment="Center"
                     Foreground="Gray"/>
         </StackPanel>
-        <local:FlightBoard HorizontalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="1"/>
+        <local:FlightBoard HorizontalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="1" Loaded="FlightBoard_Loaded"/>
     </Grid>
 </UserControl>
