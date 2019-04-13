@@ -14,7 +14,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <var:MyFlightBoard Grid.Column="0"/>
-            <var:Joystick Grid.Column="1"/>
+            <var:TabControl Grid.Column="1" Loaded="TabControl_Loaded"/>
         </Grid>
     </Viewbox>
 </Window>

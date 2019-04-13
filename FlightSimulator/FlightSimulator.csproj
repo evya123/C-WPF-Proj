@@ -87,6 +87,9 @@
     <Compile Include="Views\AutoPilot.xaml.cs">
       <DependentUpon>AutoPilot.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TabController.xaml.cs">
+      <DependentUpon>TabController.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -104,6 +107,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AutoPilot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabController.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
