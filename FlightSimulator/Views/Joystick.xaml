@@ -26,12 +26,12 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Style="{StaticResource LabelStyle}" LayoutTransform="{StaticResource rotate}" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1">elevator</TextBlock>
+        <TextBlock Style="{StaticResource LabelStyle}" LayoutTransform="{StaticResource rotate}" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1">"elevator</TextBlock>
 
         <DockPanel HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0">
             <Label FontWeight="Bold" HorizontalAlignment="Center" FontSize="16">aileron</Label>
         </DockPanel>
-        <TextBlock Text="{Binding ElementName=, Path=Value, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2"  FontSize="16" FontWeight="Bold"/>
+        <TextBlock  Grid.Column="2"  FontSize="16" FontWeight="Bold"/>
         
         <DockPanel Grid.Column="0" Grid.Row="1" LayoutTransform="{StaticResource rotate}">
             <Label DockPanel.Dock="Bottom" FontWeight="Bold" HorizontalAlignment="Center" FontSize="16">throttle</Label>
