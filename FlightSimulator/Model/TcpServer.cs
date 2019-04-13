@@ -1,75 +1,66 @@
 ﻿using System;
-using System.Threading.Tasks;
-
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
-using System.Diagnostics;
+using System.Text;
 
-namespace FlightSimulator.Model
+namespace FlightSimulator
 {
-    class TcpServer : IDisposable
+    public class TcpServer
     {
-        public class DataReceivedEventArgs : SocketAsyncEventArgs
+        public void Run(string address, int port)
         {
-            public NetworkStream Stream { get; private set; }
-
-            public DataReceivedEventArgs(NetworkStream stream)
+            var listener = new TcpListener(IPAddress.Parse(address), port);
+            Console.WriteLine("Waiting for connection.....");
+            listener.Start();
+            while (true)
             {
-                Stream = stream;
-            }
-        }
-
-        private readonly TcpListener _listener;
-        private CancellationTokenSource _tokenSource;
-        private bool _listening;
-        private CancellationToken _token;
-        private ApplicationSettingsModel asm;
-        public event EventHandler<DataReceivedEventArgs> OnDataReceived;
-
-        public TcpServer()
-        {
-            this.asm = new ApplicationSettingsModel();
-            this._listener = new TcpListener(IPAddress.Any, this.asm.FlightInfoPort);
-        }
-
-        public bool Listening => _listening;
-
-        public async Task StartAsync(CancellationToken? token = null)
-        {
-            _tokenSource = CancellationTokenSource.CreateLinkedTokenSource(token ?? new CancellationToken());
-            _token = _tokenSource.Token;
-            _listener.Start();
-            _listening = true;
-
-            try
-            {
-                while (!_token.IsCancellationRequested)
+                TcpClient tcpclient = null;
+                NetworkStream netstream = null;
+                try
                 {
-                    await Task.Run(async () =>
+                    tcpclient = listener.AcceptTcpClient();
+                    Console.WriteLine("Client connected from " + tcpclient.Client.LocalEndPoint.ToString());
+                    netstream = tcpclient.GetStream();
+                    var responsewriter = new StreamWriter(netstream) { AutoFlush = true };
+                    while (true)
                     {
-                        var tcpClientTask = _listener.AcceptTcpClientAsync();
-                        var result = await tcpClientTask;
-                        NetworkStream networkStream = result.GetStream();
-                        OnDataReceived?.Invoke(this, new DataReceivedEventArgs(networkStream));
-                    }, _token);
+                        if (IsDisconnected(tcpclient))
+                            throw new Exception("Client disconnected gracefully");
+                        if (netstream.DataAvailable)             // handle scenario where client is not done yet, and DataAvailable is false. This is not part of the tcp protocol.
+                        {
+                            string request = Read(netstream);
+                            Console.WriteLine("Client sent: " + request);
+                            responsewriter.Write("You sent: " + request);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    netstream.Close();
+                    tcpclient.Close();
+                    Console.WriteLine(ex.Message);
                 }
             }
-            finally
+        }
+
+        private bool IsDisconnected(TcpClient tcp)
+        {
+            if (tcp.Client.Poll(0, SelectMode.SelectRead))
             {
-                _listener.Stop();
-                _listening = false;
+                byte[] buff = new byte[1];
+                if (tcp.Client.Receive(buff, SocketFlags.Peek) == 0)
+                    return true;
             }
+            return false;
         }
 
-        public void Stop()
+        private string Read(NetworkStream netstream)
         {
-            _tokenSource?.Cancel();
-        }
-
-        public void Dispose()
-        {
-            Stop();
+            byte[] buffer = new byte[1024];
+            int dataread = netstream.Read(buffer, 0, buffer.Length);
+            string stringread = Encoding.UTF8.GetString(buffer, 0, dataread);
+            return stringread;
         }
     }
 }

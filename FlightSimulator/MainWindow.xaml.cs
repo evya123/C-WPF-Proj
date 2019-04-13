@@ -11,7 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
+using FlightSimulator.Model;
+using System.Threading;
+using System.Net.Sockets;
 namespace FlightSimulator
 {
     /// <summary>
@@ -22,6 +24,8 @@ namespace FlightSimulator
         public MainWindow()
         {
             InitializeComponent();
+            var asyncserver = new TcpServer();
+            asyncserver.Run("127.0.0.1", 5400);
         }
 
         private void TabControl_Loaded(object sender, RoutedEventArgs e)
