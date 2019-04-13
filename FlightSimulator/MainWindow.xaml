@@ -6,15 +6,15 @@
         x:Class="FlightSimulator.MainWindow"
         xmlns:var="clr-namespace:FlightSimulator.Views"
         mc:Ignorable="d"
-        Title="FlightSimulator" Height="450" Width="800">
+        Title="FlightSimulator" Height="450" Width="920">
     <Viewbox>
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <var:MyFlightBoard Grid.Column="0"/>
-            <var:TabControl Grid.Column="1" Loaded="TabControl_Loaded"/>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="450"/>
+				<ColumnDefinition Width="470"/>
+			</Grid.ColumnDefinitions>
+			<var:MyFlightBoard Grid.Column="0"/>
+            <var:TabControl Grid.Column="1"/>
         </Grid>
     </Viewbox>
 </Window>

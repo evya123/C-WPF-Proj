@@ -23,6 +23,8 @@ namespace FlightSimulator.Views
         public MyFlightBoard()
         {
             InitializeComponent();
+            ViewModels.SettingsVM s = new ViewModels.SettingsVM();
+
         }
 
         private void ClickConnect(object sender, RoutedEventArgs e)

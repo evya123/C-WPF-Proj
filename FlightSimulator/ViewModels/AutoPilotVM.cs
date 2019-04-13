@@ -10,7 +10,7 @@ namespace FlightSimulator.ViewModels
     {
         public AutoPilotVM()
         {
-
+            
         }
     }
 }
