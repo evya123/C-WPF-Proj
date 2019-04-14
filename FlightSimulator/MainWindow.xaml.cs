@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using FlightSimulator.Model;
-using System.Threading;
 using System.Net.Sockets;
+using System.IO;
+using System.Text;
+
 namespace FlightSimulator
 {
     /// <summary>
@@ -36,10 +26,44 @@ namespace FlightSimulator
         }
 
 
-        private string Asyncserver_MyEvent(string str)
+        private void Asyncserver_MyEvent(TcpClient tcpclient, NetworkStream netstream)
         {
-            Console.WriteLine(str);
-            return "";
+            netstream = tcpclient.GetStream();
+            var responsewriter = new StreamWriter(netstream) { AutoFlush = true };
+            while (true)
+            {
+                if (IsDisconnected(tcpclient))
+                {
+                    Console.WriteLine("Client disconnected gracefully");
+                    break;
+                }
+                if (netstream.DataAvailable)             // handle scenario where client is not done yet, and DataAvailable is false. This is not part of the tcp protocol.
+                {
+                    string request = Read(netstream);
+                    string[] tokens = request.Split(',');
+                    
+
+                }
+            }
+        }
+
+        private bool IsDisconnected(TcpClient tcp)
+        {
+            if (tcp.Client.Poll(0, SelectMode.SelectRead))
+            {
+                byte[] buff = new byte[1];
+                if (tcp.Client.Receive(buff, SocketFlags.Peek) == 0)
+                    return true;
+            }
+            return false;
+        }
+
+        private string Read(NetworkStream netstream)
+        {
+            byte[] buffer = new byte[1024];
+            int dataread = netstream.Read(buffer, 0, buffer.Length);
+            string stringread = Encoding.UTF8.GetString(buffer, 0, dataread);
+            return stringread;
         }
     }
 }
