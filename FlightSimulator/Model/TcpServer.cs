@@ -1,12 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 namespace FlightSimulator
 {
-    public delegate string DataHandler(string str);
+    public delegate void DataHandler(TcpClient tcp, NetworkStream netstream);
     public class TcpServer
     {
         private DataHandler _myEvent;
@@ -42,22 +41,10 @@ namespace FlightSimulator
                     try
                     {
                         tcpclient = listener.AcceptTcpClient();
-                        Console.WriteLine("Client connected from " + tcpclient.Client.LocalEndPoint.ToString());
-                        netstream = tcpclient.GetStream();
-                        var responsewriter = new StreamWriter(netstream) { AutoFlush = true };
-                        while (true)
-                        {
-                            if (IsDisconnected(tcpclient))
-                            {
-                                Console.WriteLine("Client disconnected gracefully");
-                                break;
-                            }
-                            if (netstream.DataAvailable)             // handle scenario where client is not done yet, and DataAvailable is false. This is not part of the tcp protocol.
-                            {
-                                string request = Read(netstream);
-                                _myEvent.Invoke(request);
-                            }
-                        }
+                        if (this._myEvent != null)
+                            this._myEvent.Invoke(tcpclient, netstream);
+                        else
+                            throw this.NotImplementedException();
                     }
                     catch (Exception ex)
                     {
@@ -75,23 +62,9 @@ namespace FlightSimulator
             thread.Start();
         }
 
-        private bool IsDisconnected(TcpClient tcp)
+        private Exception NotImplementedException()
         {
-            if (tcp.Client.Poll(0, SelectMode.SelectRead))
-            {
-                byte[] buff = new byte[1];
-                if (tcp.Client.Receive(buff, SocketFlags.Peek) == 0)
-                    return true;
-            }
-            return false;
-        }
-
-        private string Read(NetworkStream netstream)
-        {
-            byte[] buffer = new byte[1024];
-            int dataread = netstream.Read(buffer, 0, buffer.Length);
-            string stringread = Encoding.UTF8.GetString(buffer, 0, dataread);
-            return stringread;
+            throw new NotImplementedException();
         }
     }
 }
