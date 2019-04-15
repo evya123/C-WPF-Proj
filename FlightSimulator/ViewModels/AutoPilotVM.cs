@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using FlightSimulator.Model;
 
 
 namespace FlightSimulator.ViewModels
@@ -59,6 +60,26 @@ namespace FlightSimulator.ViewModels
         {
             blank = "";
         }
+
+        public ICommand ClearCommand
+        {
+            get
+            {
+                return _clear ?? (_clear = new CommandHandler(() => clearTextbox()));
+            }
+        }
+        public void clearTextbox()
+        {
+            isWrite = false;
+            data = "";
+            blank = "";
+            NotifyPropertyChanged("CommandsFromUser");
+            NotifyPropertyChanged("ChangeColor");
+       
+        }
+
+
+
 
     }
 }
