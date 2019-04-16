@@ -32,10 +32,11 @@
 		<DockPanel HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0">
 			<Label FontWeight="Bold" HorizontalAlignment="Center" FontSize="16">aileron</Label>
 		</DockPanel>
-		<TextBlock Text="{Binding ElementName=Joystick, Path=Aileron, StringFormat=0.0#}" 
-                   HorizontalAlignment="Right" Grid.Row="2" Grid.Column="2" FontSize="16"/>
+		<TextBlock Text="{Binding ElementName=Joy, Path=Elevator, StringFormat=0.0#}" 
+               VerticalAlignment="Top"  Grid.Row="1" Grid.Column="2"  LayoutTransform="{StaticResource rotate}"  Margin="0,30,0,0" HorizontalAlignment="Center" FontWeight="Bold"  FontSize="16"/>
+		<TextBlock Text="{Binding ElementName=Joy, Path=Aileron, StringFormat=0.0#}" 
+                 Margin="0,0,30,0"   HorizontalAlignment="Right"  Grid.Row="0" FontWeight="Bold" Grid.Column="1" FontSize="16"/>
 
-		<TextBlock  Grid.Column="2"  FontSize="16" FontWeight="Bold"/>
 
 		<DockPanel Grid.Column="0" Grid.Row="1" LayoutTransform="{StaticResource rotate}">
 			<Label DockPanel.Dock="Bottom" FontWeight="Bold" HorizontalAlignment="Center" FontSize="16">throttle</Label>
