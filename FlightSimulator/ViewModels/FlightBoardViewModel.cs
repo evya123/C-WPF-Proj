@@ -43,14 +43,15 @@ namespace FlightSimulator.ViewModels
             this._fbModel.start(5400);
         }
 
-        private void _fbModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected void _fbModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            Console.WriteLine("VM Notification to View!");
             string rawData = _fbModel.Data;
             string[] tokens = rawData.Split(',');
             try
             {
-                _lon = Double.Parse(tokens[0]);
-                _lat = Double.Parse(tokens[1]);
+                Lon = Double.Parse(tokens[0]);
+                Lat = Double.Parse(tokens[1]);
             } catch (Exception exc)
             {
                 Console.WriteLine(exc.Message);
