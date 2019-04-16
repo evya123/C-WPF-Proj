@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FlightSimulator.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="450">
+             d:DesignHeight="470" d:DesignWidth="470">
 	<StackPanel>
 		<Grid>
-			<TabControl Height="450" Width="450">
+			<TabControl Height="470" Width="470">
 				<TabItem Header="Manual">
-					<local:Joystick/>
+					<local:Manual/>
 				</TabItem>
 				<TabItem Header="Auto Pilot">
 					<local:AutoPilot/>
