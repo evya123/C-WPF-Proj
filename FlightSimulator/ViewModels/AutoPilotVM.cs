@@ -61,7 +61,7 @@ namespace FlightSimulator.ViewModels
             blank = "";
         }
 
-        public ICommand ClearCommand
+        public ICommand clearCommand
         {
             get
             {
@@ -70,12 +70,8 @@ namespace FlightSimulator.ViewModels
         }
         public void clearTextbox()
         {
-            isWrite = false;
-            data = "";
-            blank = "";
-            NotifyPropertyChanged("CommandsFromUser");
-            NotifyPropertyChanged("ChangeColor");
-       
+            CommandsFromUser = "";
+            isWrite = false;       
         }
         public ICommand OkCommand
         {
