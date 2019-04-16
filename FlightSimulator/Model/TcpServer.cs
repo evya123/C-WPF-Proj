@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 namespace FlightSimulator
 {
     public delegate void DataHandler(TcpClient tcp, NetworkStream netstream);
+
     public class TcpServer
     {
-        private DataHandler _myEvent;
+        private TcpClient tcpclient = null;
+        private NetworkStream netstream = null;
 
+        private DataHandler _myEvent;
         public event DataHandler MyEvent
         {
             add
@@ -36,8 +38,6 @@ namespace FlightSimulator
             Thread thread = new Thread(() => {
                 while (true)
                 {
-                    TcpClient tcpclient = null;
-                    NetworkStream netstream = null;
                     try
                     {
                         tcpclient = listener.AcceptTcpClient();
@@ -48,14 +48,12 @@ namespace FlightSimulator
                     }
                     catch (Exception ex)
                     {
-                        netstream.Close();
-                        tcpclient.Close();
+                        Disconnect();
                         Console.WriteLine(ex.Message);
                     }
                     finally
                     {
-                        netstream.Close();
-                        tcpclient.Close();
+                        Disconnect();
                     }
                 }
             });
@@ -65,6 +63,12 @@ namespace FlightSimulator
         private Exception NotImplementedException()
         {
             throw new NotImplementedException();
+        }
+
+        public void Disconnect()
+        {
+            netstream.Close();
+            tcpclient.Close();
         }
     }
 }

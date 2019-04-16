@@ -3,6 +3,7 @@ using System.Windows;
 using System.Net.Sockets;
 using System.IO;
 using System.Text;
+using FlightSimulator.ViewModels;
 
 namespace FlightSimulator
 {
@@ -11,20 +12,19 @@ namespace FlightSimulator
     /// </summary>
     public partial class MainWindow : Window
     {
+        private FlightBoardViewModel _fbViewModel;
         public MainWindow()
         {
             InitializeComponent();
-
-            var asyncserver = new TcpServer();
-            asyncserver.MyEvent += Asyncserver_MyEvent;
-            asyncserver.Run(5400);
+            DataHandler dh = Asyncserver_MyEvent;
+            this._fbViewModel = new FlightBoardViewModel(dh);
+            this.DataContext = _fbViewModel;
         }
 
         private void TabControl_Loaded(object sender, RoutedEventArgs e)
         {
 
         }
-
 
         private void Asyncserver_MyEvent(TcpClient tcpclient, NetworkStream netstream)
         {
