@@ -1,16 +1,26 @@
 ﻿using FlightSimulator.Model;
 using System;
-using System.IO;
 using System.Net.Sockets;
-using System.Text;
 using System.Windows.Input;
 
 namespace FlightSimulator.ViewModels
 {
     public class FlightBoardViewModel : BaseNotify
     {
+        private readonly FlightBoardModel _fbModel;
         private ICommand localSettingsCommnad;
-        private FlightBoardModel _fbModel;
+        public ICommand SettingsCommnad
+        {
+            set
+            {
+
+            }
+            get
+            {
+                return localSettingsCommnad ?? (localSettingsCommnad = new CommandHandler(() => OnClick()));
+
+            }
+        }
         private Double _lon;
         private Double _lat;
         public double Lon
@@ -26,80 +36,31 @@ namespace FlightSimulator.ViewModels
 
         }
 
-        public FlightBoardViewModel()
+        public FlightBoardViewModel(FlightBoardModel fbM)
         {
-            Action<TcpClient, NetworkStream> a = Asyncserver_MyEvent;
-            CommandHandler ch = new CommandHandler(a);
-            this._fbModel = new FlightBoardModel(ch);
+            this._fbModel = fbM;
+            this._fbModel.PropertyChanged += _fbModel_PropertyChanged;
             this._fbModel.start(5400);
         }
 
-        class SettingsVM
+        private void _fbModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            private ICommand localSettingsCommnad;
-            public ICommand SettingsCommnad
+            string rawData = _fbModel.Data;
+            string[] tokens = rawData.Split(',');
+            try
             {
-                set
-                {
-
-                }
-                get
-                {
-                    return localSettingsCommnad ?? (localSettingsCommnad = new CommandHandler(() => OnClick()));
-
-                }
-            }
-
-            private void OnClick()
+                _lon = Double.Parse(tokens[0]);
+                _lat = Double.Parse(tokens[1]);
+            } catch (Exception exc)
             {
-                Views.Settings s = new Views.Settings();
-                s.ShowDialog();
+                Console.WriteLine(exc.Message);
             }
         }
 
-
-        private void Asyncserver_MyEvent(TcpClient tcpclient, NetworkStream netstream)
+        private void OnClick()
         {
-            netstream = tcpclient.GetStream();
-            var responsewriter = new StreamWriter(netstream) { AutoFlush = true };
-            while (true)
-            {
-                if (IsDisconnected(tcpclient))
-                {
-                    Console.WriteLine("Client disconnected gracefully");
-                    break;
-                }
-                if (netstream.DataAvailable)             // handle scenario where client is not done yet, and DataAvailable is false. This is not part of the tcp protocol.
-                {
-                    string request = Read(netstream);
-                    string[] tokens = request.Split(',');
-                    foreach (var token in tokens)
-                    {
-                        Console.WriteLine(token);
-                    }
-
-
-                }
-            }
+            Views.Settings s = new Views.Settings();
+            s.ShowDialog();
         }
-
-        private bool IsDisconnected(TcpClient tcp)
-        {
-            if (tcp.Client.Poll(0, SelectMode.SelectRead))
-            {
-                byte[] buff = new byte[1];
-                if (tcp.Client.Receive(buff, SocketFlags.Peek) == 0)
-                    return true;
-            }
-            return false;
-        }
-
-        private string Read(NetworkStream netstream)
-        {
-            byte[] buffer = new byte[1024];
-            int dataread = netstream.Read(buffer, 0, buffer.Length);
-            string stringread = Encoding.UTF8.GetString(buffer, 0, dataread);
-            return stringread;
-        }
-    }
+}
 }

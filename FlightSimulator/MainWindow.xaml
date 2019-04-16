@@ -13,7 +13,7 @@
 				<ColumnDefinition Width="450"/>
 				<ColumnDefinition Width="470"/>
 			</Grid.ColumnDefinitions>
-			<var:MyFlightBoard Grid.Column="0"/>
+			<var:MyFlightBoard Grid.Column="0" />
             <var:TabControl Grid.Column="1"/>
         </Grid>
     </Viewbox>

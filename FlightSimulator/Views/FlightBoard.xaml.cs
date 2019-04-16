@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using FlightSimulator.ViewModels;
@@ -17,7 +15,7 @@ namespace FlightSimulator.Views
         private ObservableDataSource<Point> planeLocations = null;
         public FlightBoard()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

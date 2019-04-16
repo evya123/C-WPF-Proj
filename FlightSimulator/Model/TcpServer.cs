@@ -1,38 +1,32 @@
 ﻿using FlightSimulator.Model;
 using System;
+using System.ComponentModel;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 namespace FlightSimulator
 {
     //public delegate void DataHandler(TcpClient tcp, NetworkStream netstream);
 
-    public class TcpServer
+    public class TcpServer : INotifyPropertyChanged
     {
         private TcpClient tcpclient = null;
         private NetworkStream netstream = null;
+        private string _data;
+        public string Data {
+            get { return _data; }
+            set { _data = value; NotifyPropertyChanged("Data"); } }
 
-        //private DataHandler _myEvent;
-        /*public event DataHandler MyEvent
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged(string v)
         {
-            add
-            {
-                lock (this)
-                {
-                    _myEvent += value;
-                }
-            }
-            remove
-            {
-                lock (this)
-                {
-                    _myEvent -= value;
-                }
-            }
-        }*/
-        private CommandHandler _myHandler;
+            if (this.PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs(v));
+        }
 
-        public TcpServer(CommandHandler ch) { this._myHandler = ch; }
         public void Run(int port)
         {
             var listener = new TcpListener(IPAddress.Any, port);
@@ -41,13 +35,19 @@ namespace FlightSimulator
             {
                 listener.Start();
                 Thread thread = new Thread(() => {
+                    netstream = tcpclient.GetStream();
+                    var responsewriter = new StreamWriter(netstream) { AutoFlush = true };
                     while (true)
                     {
-                        tcpclient = listener.AcceptTcpClient();
-                        if (this._myHandler != null)
-                            this._myHandler.Execute(this);
-                        else
-                            throw this.NotImplementedException();
+                        if (IsDisconnected(tcpclient))
+                        {
+                            Console.WriteLine("Client disconnected gracefully");
+                            break;
+                        }
+                        if (netstream.DataAvailable)             // handle scenario where client is not done yet, and DataAvailable is false. This is not part of the tcp protocol.
+                        {
+                            _data = Read(netstream);
+                        }
                     }
                 });
                 thread.Start();
@@ -62,15 +62,31 @@ namespace FlightSimulator
             }
         }
 
-        private Exception NotImplementedException()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Disconnect()
         {
-            netstream.Close();
-            tcpclient.Close();
+            if (netstream != null)
+                netstream.Close();
+            if (tcpclient != null)
+                tcpclient.Close();
+        }
+
+        private bool IsDisconnected(TcpClient tcp)
+        {
+            if (tcp.Client.Poll(0, SelectMode.SelectRead))
+            {
+                byte[] buff = new byte[1];
+                if (tcp.Client.Receive(buff, SocketFlags.Peek) == 0)
+                    return true;
+            }
+            return false;
+        }
+
+        private string Read(NetworkStream netstream)
+        {
+            byte[] buffer = new byte[1024];
+            int dataread = netstream.Read(buffer, 0, buffer.Length);
+            string stringread = Encoding.UTF8.GetString(buffer, 0, dataread);
+            return stringread;
         }
     }
 }

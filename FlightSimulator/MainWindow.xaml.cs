@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.IO;
 using System.Text;
 using FlightSimulator.ViewModels;
+using FlightSimulator.Model;
 
 namespace FlightSimulator
 {
@@ -16,7 +17,8 @@ namespace FlightSimulator
         public MainWindow()
         {
             InitializeComponent();
-            this._fbViewModel = new FlightBoardViewModel();
+            MyFlightBoardModel _mfbModel = new MyFlightBoardModel();
+            this._fbViewModel = new FlightBoardViewModel(_mfbModel);
             this.DataContext = _fbViewModel;
         }
 

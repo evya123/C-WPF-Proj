@@ -1,28 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace FlightSimulator.Model
 {
-    class FlightBoardModel
+    public abstract class FlightBoardModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         private TcpServer _infoChannel;
-        public FlightBoardModel(CommandHandler ch)
+        protected string _data;
+        public string Data
         {
-            this._infoChannel = new TcpServer(ch);
-            //this._infoChannel.MyEvent += dh;
+            get { return _data; }
+            set { _data = value; NotifyPropertyChanged("Data"); }
+        }
+        public FlightBoardModel()
+        {
+            this._infoChannel = new TcpServer();
         }
 
-        public void start(int port)
+        protected void NotifyPropertyChanged(string v)
         {
-            _infoChannel.Run(port);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(v));
         }
 
-        public void stop()
-        {
-            _infoChannel.Disconnect();
-        }
+        abstract protected void _infoChannel_PropertyChanged(object sender, PropertyChangedEventArgs e);
+
+        abstract public void start(int port);
+
+        abstract public void stop();
     }
 }
