@@ -1,14 +1,9 @@
 ﻿using FlightSimulator.Model;
 using System;
-using System.Windows.Input;
-<<<<<<< HEAD
-
-=======
-using FlightSimulator.Views;
-using System.Net.Sockets;
 using System.IO;
+using System.Net.Sockets;
 using System.Text;
->>>>>>> 5c3fe00cd1de0878946ee2397c8ace3b11edabba
+using System.Windows.Input;
 
 namespace FlightSimulator.ViewModels
 {
