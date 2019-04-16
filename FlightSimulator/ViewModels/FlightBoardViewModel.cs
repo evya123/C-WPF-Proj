@@ -26,13 +26,16 @@ namespace FlightSimulator.ViewModels
         public double Lon
         {
             get { return _lon; }
-            set { _lon = value; NotifyPropertyChanged("Lon"); }
+            set { _lon = value; NotifyPropertyChanged("Lon");
+                Console.WriteLine("Lon is changed!");
+            }
         }
 
         public double Lat
         {
             get { return _lat; }
-            set { _lat = value; NotifyPropertyChanged("Lat"); }
+            set { _lat = value; NotifyPropertyChanged("Lat");
+            }
 
         }
 
@@ -45,13 +48,12 @@ namespace FlightSimulator.ViewModels
 
         protected void _fbModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Console.WriteLine("VM Notification to View!");
             string rawData = _fbModel.Data;
             string[] tokens = rawData.Split(',');
             try
             {
-                Lon = Double.Parse(tokens[0]);
-                Lat = Double.Parse(tokens[1]);
+                Lon = Double.Parse(tokens[1]);
+                Lat = Double.Parse(tokens[2]);
             } catch (Exception exc)
             {
                 Console.WriteLine(exc.Message);

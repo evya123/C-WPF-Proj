@@ -12,10 +12,6 @@ namespace FlightSimulator.Model
             get { return _data; }
             set { _data = value; NotifyPropertyChanged("Data"); }
         }
-        public FlightBoardModel()
-        {
-        }
-
         protected void NotifyPropertyChanged(string v)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(v));

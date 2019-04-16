@@ -28,7 +28,6 @@ namespace FlightSimulator
         public void Run(int port)
         {
             var listener = new TcpListener(IPAddress.Any, port);
-            Console.WriteLine("Waiting for connection.....");
             try
             {
                 Thread thread = new Thread(() => {
