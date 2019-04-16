@@ -11,7 +11,9 @@ namespace FlightSimulator.Views
         public MyFlightBoard()
         {
             InitializeComponent();
-            this.DataContext = new FlightBoardViewModel();
+            FlightBoardViewModel vm = new FlightBoardViewModel();
+            vm.PropertyChanged += FlightBoardResource.Vm_PropertyChanged;
+            this.DataContext = vm;
         }
 
         private void ClickConnect(object sender, RoutedEventArgs e)

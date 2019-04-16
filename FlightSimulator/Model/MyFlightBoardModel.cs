@@ -16,7 +16,8 @@ namespace FlightSimulator.Model
 
         protected override void _infoChannel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            _data = _infoChannel.Data;
+            Console.WriteLine("Model Notification to VM!");
+            this.Data = _infoChannel.Data;
         }
 
         public override void start(int port)

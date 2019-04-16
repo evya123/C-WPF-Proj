@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:FlightSimulator.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="450">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -26,7 +27,7 @@
                 HorizontalAlignment="Center"
                 TextElement.FontWeight="Bold"
                 Foreground="Gray"/>
-            
+
             <Button x:Name="Settings"
                     Content="Settings"
                     Click="ClickSettings"
@@ -38,6 +39,6 @@
                     Foreground="Gray"
 					Command="{Binding SettingsCommnad}"/>
         </StackPanel>
-        <local:FlightBoard HorizontalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="1" Loaded="FlightBoard_Loaded" Margin="10"/>
+        <local:FlightBoard HorizontalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="1" Loaded="FlightBoard_Loaded" Margin="10" x:Name="FlightBoardResource"/>
     </Grid>
 </UserControl>

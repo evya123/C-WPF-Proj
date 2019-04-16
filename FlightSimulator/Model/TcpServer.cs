@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading;
 namespace FlightSimulator
 {
-    //public delegate void DataHandler(TcpClient tcp, NetworkStream netstream);
-
     public class TcpServer : INotifyPropertyChanged
     {
         TcpClient tcpclient = null;
@@ -17,7 +15,7 @@ namespace FlightSimulator
         private string _data;
         public string Data {
             get { return _data; }
-            set { _data = value; NotifyPropertyChanged("Data"); } }
+            set { _data = value; Console.WriteLine("TcpServer Notification to Model!"); NotifyPropertyChanged("Data"); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -47,7 +45,7 @@ namespace FlightSimulator
                         }
                         if (netstream.DataAvailable)             // handle scenario where client is not done yet, and DataAvailable is false. This is not part of the tcp protocol.
                         {
-                            _data = Read(netstream);
+                            Data = Read(netstream);
                         }
                     }
                 });
