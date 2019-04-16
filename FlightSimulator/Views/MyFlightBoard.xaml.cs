@@ -8,10 +8,10 @@ namespace FlightSimulator.Views
     /// </summary>
     public partial class MyFlightBoard : UserControl
     {
-        public MyFlightBoard(FlightBoardViewModel fbViewModel)
+        public MyFlightBoard()
         {
             InitializeComponent();
-            this.DataContext = fbViewModel;
+            this.DataContext = new FlightBoardViewModel();
         }
 
         private void ClickConnect(object sender, RoutedEventArgs e)

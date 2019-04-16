@@ -36,9 +36,9 @@ namespace FlightSimulator.ViewModels
 
         }
 
-        public FlightBoardViewModel(FlightBoardModel fbM)
+        public FlightBoardViewModel()
         {
-            this._fbModel = fbM;
+            this._fbModel = new MyFlightBoardModel();
             this._fbModel.PropertyChanged += _fbModel_PropertyChanged;
             this._fbModel.start(5400);
         }

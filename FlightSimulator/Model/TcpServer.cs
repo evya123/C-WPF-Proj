@@ -12,8 +12,8 @@ namespace FlightSimulator
 
     public class TcpServer : INotifyPropertyChanged
     {
-        private TcpClient tcpclient = null;
-        private NetworkStream netstream = null;
+        TcpClient tcpclient = null;
+        NetworkStream netstream = null;
         private string _data;
         public string Data {
             get { return _data; }
@@ -33,8 +33,9 @@ namespace FlightSimulator
             Console.WriteLine("Waiting for connection.....");
             try
             {
-                listener.Start();
                 Thread thread = new Thread(() => {
+                    listener.Start();
+                    tcpclient = listener.AcceptTcpClient();
                     netstream = tcpclient.GetStream();
                     var responsewriter = new StreamWriter(netstream) { AutoFlush = true };
                     while (true)
