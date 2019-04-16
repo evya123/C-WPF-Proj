@@ -37,11 +37,11 @@ namespace FlightSimulator
         {
             var listener = new TcpListener(IPAddress.Any, port);
             Console.WriteLine("Waiting for connection.....");
-            listener.Start();
-            Thread thread = new Thread(() => {
-                while (true)
-                {
-                    try
+            try
+            {
+                listener.Start();
+                Thread thread = new Thread(() => {
+                    while (true)
                     {
                         tcpclient = listener.AcceptTcpClient();
                         if (this._myHandler != null)
@@ -49,18 +49,17 @@ namespace FlightSimulator
                         else
                             throw this.NotImplementedException();
                     }
-                    catch (Exception ex)
-                    {
-                        Disconnect();
-                        Console.WriteLine(ex.Message);
-                    }
-                    finally
-                    {
-                        Disconnect();
-                    }
-                }
-            });
-            thread.Start();
+                });
+                thread.Start();
+            } catch (Exception e)
+            {
+                Disconnect();
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
         }
 
         private Exception NotImplementedException()
