@@ -61,7 +61,7 @@ namespace FlightSimulator.ViewModels
             blank = "";
         }
 
-        public ICommand clearCommand
+        public ICommand ClearCommand
         {
             get
             {
@@ -70,11 +70,12 @@ namespace FlightSimulator.ViewModels
         }
         public void clearTextbox()
         {
-
-            CommandsFromUser = "";
-            blank = "";
-            data = "";
             isWrite = false;
+            data = "";
+            blank = "";
+            NotifyPropertyChanged("CommandsFromUser");
+            NotifyPropertyChanged("ChangeColor");
+       
         }
         public ICommand OkCommand
         {
@@ -87,10 +88,8 @@ namespace FlightSimulator.ViewModels
         {
             string[] delimiter = { "\r\n" };
             allCommands = data.Split(delimiter, StringSplitOptions.None);
-            for(int i = 0; i<allCommands.Length; ++i)
-            {
-                Console.WriteLine(allCommands[i]);
-            }
+
         }
+
     }
 }
