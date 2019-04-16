@@ -41,6 +41,10 @@ namespace FlightSimulator
                 {
                     string request = Read(netstream);
                     string[] tokens = request.Split(',');
+                    foreach (var token in tokens)
+                    {
+                        Console.WriteLine(token);
+                    }
                     
 
                 }
