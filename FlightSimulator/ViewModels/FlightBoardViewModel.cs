@@ -1,23 +1,30 @@
-﻿using FlightSimulator.Model.Interface;
+﻿using FlightSimulator.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlightSimulator.ViewModels
 {
     public class FlightBoardViewModel : BaseNotify
     {
-
+        private FlightBoardModel _fbModel;
+        private Double _lon;
+        private Double _lat;
         public double Lon
         {
-            get;
+            get { return _lon; }
+            set { _lon = value; NotifyPropertyChanged("Lon"); }
         }
 
         public double Lat
         {
-            get;
+            get { return _lat; }
+            set { _lat = value; NotifyPropertyChanged("Lat"); }
+
+        }
+
+        public FlightBoardViewModel(DataHandler dh)
+        {
+            this._fbModel = new FlightBoardModel(dh);
+            this._fbModel.start(5400);
         }
     }
 }
