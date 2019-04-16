@@ -12,30 +12,10 @@ using System.Windows.Input;
 
 namespace FlightSimulator.ViewModels
 {
-    class SettingsVM
-    {
-        private ICommand localSettingsCommnad; 
-        public ICommand SettingsCommnad
-        {
-            set
-            {
 
-            }
-            get
-            {
-                return localSettingsCommnad ?? (localSettingsCommnad= new CommandHandler(()=>OnClick()));
-            
-            }
-        }
-
-        private void OnClick()
-        {
-            Views.Settings s = new Views.Settings();
-            s.ShowDialog();
-        }
 
 
 
 
     }
-}
+

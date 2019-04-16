@@ -1,15 +1,14 @@
 ﻿using FlightSimulator.Model;
-
 using System;
 using System.Windows.Input;
-using FlightSimulator.Views;
+
 
 namespace FlightSimulator.ViewModels
 {
     public class FlightBoardViewModel : BaseNotify
     {
+        private ICommand localSettingsCommnad;
         private FlightBoardModel _fbModel;
-        private ICommand _set;
         private Double _lon;
         private Double _lat;
         public double Lon
@@ -31,18 +30,27 @@ namespace FlightSimulator.ViewModels
             this._fbModel.start(5400);
         }
 
-        public ICommand SettingsCommand
+        class SettingsVM
         {
-            get
+            private ICommand localSettingsCommnad;
+            public ICommand SettingsCommnad
             {
-                return _set ?? (_set = new CommandHandler(() => showSettings()));
-            }
-        }
+                set
+                {
 
-        public void showSettings()
-        {
-            Settings s = new Settings();
-            s.ShowDialog();
+                }
+                get
+                {
+                    return localSettingsCommnad ?? (localSettingsCommnad = new CommandHandler(() => OnClick()));
+
+                }
+            }
+
+            private void OnClick()
+            {
+                Views.Settings s = new Views.Settings();
+                s.ShowDialog();
+            }
         }
     }
 }

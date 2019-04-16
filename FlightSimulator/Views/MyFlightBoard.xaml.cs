@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using FlightSimulator.ViewModels;
 namespace FlightSimulator.Views
 {
     /// <summary>
@@ -23,8 +23,7 @@ namespace FlightSimulator.Views
         public MyFlightBoard()
         {
             InitializeComponent();
-            ViewModels.SettingsVM s = new ViewModels.SettingsVM();
-
+            this.DataContext = new FlightBoardViewModel();
         }
 
         private void ClickConnect(object sender, RoutedEventArgs e)

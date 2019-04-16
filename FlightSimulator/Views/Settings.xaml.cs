@@ -23,7 +23,8 @@ namespace FlightSimulator.Views
         public Settings()
         {
             InitializeComponent();
-        
+
+
         }
     }
 }
