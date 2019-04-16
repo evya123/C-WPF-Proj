@@ -88,8 +88,6 @@ namespace FlightSimulator.ViewModels
         {
             string[] delimiter = { "\r\n" };
             allCommands = data.Split(delimiter, StringSplitOptions.None);
-
         }
-
     }
 }
