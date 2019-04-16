@@ -65,6 +65,7 @@ namespace FlightSimulator
             string stringread = Encoding.UTF8.GetString(buffer, 0, dataread);
             return stringread;
         }
+
     }
 }
 

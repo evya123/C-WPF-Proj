@@ -20,8 +20,10 @@
 			<TextBox Name="AutoPilot1" Grid.Row="0" Margin="0,0,0,30" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" AcceptsReturn="True"
 				 Text="{Binding CommandsFromUser, UpdateSourceTrigger=PropertyChanged}" Background="{Binding ChangeColor
 				,UpdateSourceTrigger=PropertyChanged}"/>
-			<Button Style ="{StaticResource ResourceKey=StandardButton}" Name ="OK" HorizontalAlignment="Center" Grid.Row="1"  Content="OK" Margin="0,0,75,20" Command="{Binding OkCommand}"/>
-		<Button Style ="{StaticResource ResourceKey=StandardButton}" Name ="CLEAR" HorizontalAlignment="Center" Grid.Row="1" Content="Clear" Margin="75,0,0,20" Command="{Binding clearCommand}"/>
+		<Button Style ="{StaticResource ResourceKey=StandardButton}" Name ="OK" 
+				HorizontalAlignment="Center" Grid.Row="1"  Content="OK" Margin="0,0,75,20" Command="{Binding OkCommand, UpdateSourceTrigger=PropertyChanged}"/>
+		<Button Style ="{StaticResource ResourceKey=StandardButton}"
+				Name ="CLEAR" HorizontalAlignment="Center" Grid.Row="1" Content="Clear" Margin="75,0,0,20" Command="{Binding clearCommand, UpdateSourceTrigger=PropertyChanged }"/>
 		</Grid>
 
 </UserControl>

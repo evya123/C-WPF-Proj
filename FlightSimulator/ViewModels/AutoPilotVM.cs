@@ -11,8 +11,8 @@ namespace FlightSimulator.ViewModels
 {
     class AutoPilotVM : BaseNotify
     {
-        private List<List<string>> AllCommands = new List<List<string>>();
-        private ICommand _connect;
+        private String[] allCommands;
+        private ICommand _okC;
         private ICommand _clear;
         // check if the user write or not in the textbox
         private bool isWrite =false;
@@ -61,7 +61,7 @@ namespace FlightSimulator.ViewModels
             blank = "";
         }
 
-        public ICommand ClearCommand
+        public ICommand clearCommand
         {
             get
             {
@@ -70,16 +70,27 @@ namespace FlightSimulator.ViewModels
         }
         public void clearTextbox()
         {
-            isWrite = false;
-            data = "";
+
+            CommandsFromUser = "";
             blank = "";
-            NotifyPropertyChanged("CommandsFromUser");
-            NotifyPropertyChanged("ChangeColor");
-       
+            data = "";
+            isWrite = false;
         }
-
-
-
-
+        public ICommand OkCommand
+        {
+            get
+            {
+                return _okC ?? (_okC = new CommandHandler(() => parseCommands()));
+            }
+        }
+        public void parseCommands()
+        {
+            string[] delimiter = { "\r\n" };
+            allCommands = data.Split(delimiter, StringSplitOptions.None);
+            for(int i = 0; i<allCommands.Length; ++i)
+            {
+                Console.WriteLine(allCommands[i]);
+            }
+        }
     }
 }
