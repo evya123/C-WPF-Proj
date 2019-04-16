@@ -9,11 +9,10 @@ namespace FlightSimulator.Model
     class FlightBoardModel
     {
         private TcpServer _infoChannel;
-
-        public FlightBoardModel(DataHandler dh)
+        public FlightBoardModel(CommandHandler ch)
         {
-            this._infoChannel = new TcpServer();
-            this._infoChannel.MyEvent += dh;
+            this._infoChannel = new TcpServer(ch);
+            //this._infoChannel.MyEvent += dh;
         }
 
         public void start(int port)

@@ -1,18 +1,19 @@
-﻿using System;
+﻿using FlightSimulator.Model;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 namespace FlightSimulator
 {
-    public delegate void DataHandler(TcpClient tcp, NetworkStream netstream);
+    //public delegate void DataHandler(TcpClient tcp, NetworkStream netstream);
 
     public class TcpServer
     {
         private TcpClient tcpclient = null;
         private NetworkStream netstream = null;
 
-        private DataHandler _myEvent;
-        public event DataHandler MyEvent
+        //private DataHandler _myEvent;
+        /*public event DataHandler MyEvent
         {
             add
             {
@@ -28,8 +29,10 @@ namespace FlightSimulator
                     _myEvent -= value;
                 }
             }
-        }
+        }*/
+        private CommandHandler _myHandler;
 
+        public TcpServer(CommandHandler ch) { this._myHandler = ch; }
         public void Run(int port)
         {
             var listener = new TcpListener(IPAddress.Any, port);
@@ -41,8 +44,8 @@ namespace FlightSimulator
                     try
                     {
                         tcpclient = listener.AcceptTcpClient();
-                        if (this._myEvent != null)
-                            this._myEvent.Invoke(tcpclient, netstream);
+                        if (this._myHandler != null)
+                            this._myHandler.Execute(this);
                         else
                             throw this.NotImplementedException();
                     }
