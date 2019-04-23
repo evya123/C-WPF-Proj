@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using FlightSimulator.ViewModels;
+using System.Windows.Input;
+using FlightSimulator.Model;
 namespace FlightSimulator.Views
 {
     /// <summary>
@@ -8,27 +9,24 @@ namespace FlightSimulator.Views
     /// </summary>
     public partial class MyFlightBoard : UserControl
     {
+
         public MyFlightBoard()
         {
             InitializeComponent();
-            FlightBoardViewModel vm = new FlightBoardViewModel();
-            vm.PropertyChanged += FlightBoardResource.Vm_PropertyChanged;
-            this.DataContext = vm;
+            FlightBoardVMSingelton.Instance.PropertyChanged += FlightBoardResource.Vm_PropertyChanged;
+            this.DataContext = FlightBoardVMSingelton.Instance;
         }
 
-        private void ClickConnect(object sender, RoutedEventArgs e)
-        {
-            //TODO
-        }
-
-        private void ClickSettings(object sender, RoutedEventArgs e)
-        {
-            //TODO
-        }
 
         private void FlightBoard_Loaded(object sender, RoutedEventArgs e)
         {
             //TODO
         }
+
+        private void Connect_Click(object sender, RoutedEventArgs e)
+        {
+            Connect.IsEnabled = false;
+        }
+
     }
 }

@@ -9,16 +9,16 @@ using FlightSimulator.Model;
 
 namespace FlightSimulator.ViewModels
 {
-    class AutoPilotVM : BaseNotify
+    public class AutoPilotVM : BaseNotify
     {
         private String[] allCommands;
         private ICommand _okC;
         private ICommand _clear;
         // check if the user write or not in the textbox
         private bool isWrite =false;
-        private string color;
+        private String color;
         private String data = "";
-        private string blank = "";
+        private String blank = "";
         public String ChangeColor
         {
             get
@@ -80,7 +80,7 @@ namespace FlightSimulator.ViewModels
                 return _okC ?? (_okC = new CommandHandler(() => parseCommands()));
             }
         }
-        public void parseCommands()
+        private void parseCommands()
         {
             string[] delimiter = { "\r\n" };
             allCommands = data.Split(delimiter, StringSplitOptions.None);

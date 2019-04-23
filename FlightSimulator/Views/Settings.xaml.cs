@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using FlightSimulator.ViewModels;
+﻿using System.Windows;
 
 namespace FlightSimulator.Views
 {
@@ -23,8 +10,18 @@ namespace FlightSimulator.Views
         public Settings()
         {
             InitializeComponent();
-
+            this.DataContext = MySettingVMSingelton.Instance;
+            MySettingVMSingelton.Instance.CloseRequested += vm_CloseRequested;
 
         }
+
+        private void vm_CloseRequested(object sender, ViewModels.CloseRequestedEventArgs e)
+        {
+            if (e.DialogResult.HasValue)
+                this.DialogResult = e.DialogResult; // sets the dialog result AND closes the window
+            else
+                this.Close();
+        }
+
     }
 }

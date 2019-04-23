@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlightSimulator.ViewModels
 {
-    class JoysticVM
+    public class JoysticVM
     {
         private double aileron = 0;
         private double rudder = 0;

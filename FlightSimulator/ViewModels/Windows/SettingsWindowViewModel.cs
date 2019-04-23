@@ -4,6 +4,7 @@ using System.Windows.Input;
 
 namespace FlightSimulator.ViewModels.Windows
 {
+
     public class SettingsWindowViewModel : BaseNotify
     {
         private ISettingsModel model;

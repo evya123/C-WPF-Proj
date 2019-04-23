@@ -15,7 +15,7 @@ namespace FlightSimulator
         private string _data;
         public string Data {
             get { return _data; }
-            set { _data = value; Console.WriteLine("TcpServer Notification to Model!"); NotifyPropertyChanged("Data"); } }
+            set { _data = value; NotifyPropertyChanged("Data"); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

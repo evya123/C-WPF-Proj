@@ -1,54 +1,88 @@
 ﻿using FlightSimulator.Model;
 using System;
-using System.Net.Sockets;
 using System.Windows.Input;
 
 namespace FlightSimulator.ViewModels
 {
     public class FlightBoardViewModel : BaseNotify
     {
-        private readonly FlightBoardModel _fbModel;
-        private ICommand localSettingsCommnad;
-        public ICommand SettingsCommnad
+        private CommandHandler _exitHandler;
+        public CommandHandler ExitCommand
         {
-            set
+            private set
             {
 
             }
+            get => _exitHandler ?? (_exitHandler = new CommandHandler(() =>
+            {
+                Stop();
+            }));
+        }
+
+        //###############//
+        private ICommand _settingCommand;
+        public ICommand SettingsCommand
+        {
             get
             {
-                return localSettingsCommnad ?? (localSettingsCommnad = new CommandHandler(() => OnClick()));
-
+                return _settingCommand ?? (_settingCommand = new CommandHandler(() => SettingsClicked()));
             }
         }
+
+        //###############//
+        private ICommand _connectCommand;
+        public ICommand ConnectCommand
+        {
+            get
+            {
+                return _connectCommand ?? (_connectCommand = new CommandHandler(() => ConnectClicked()));
+            }
+        }
+
+        //###############//
+        private void ConnectClicked()
+        {
+            InfoSingleton.Instance.Run(ApplicationSettingsModel.Instance.FlightInfoPort);
+        }
+        private void SettingsClicked()
+        {
+            Views.Settings set = new Views.Settings();
+            set.ShowDialog();
+        }
+
+        //###############//
         private Double _lon;
         private Double _lat;
-        public double Lon
+        public Double Lon
         {
             get { return _lon; }
-            set { _lon = value; NotifyPropertyChanged("Lon");
-                Console.WriteLine("Lon is changed!");
-            }
+            set { _lon = value; NotifyPropertyChanged("Lon"); }
         }
-
-        public double Lat
+        public Double Lat
         {
             get { return _lat; }
-            set { _lat = value; NotifyPropertyChanged("Lat");
-            }
-
+            set { _lat = value; NotifyPropertyChanged("Lat"); }
         }
 
+        //###############//
         public FlightBoardViewModel()
         {
-            this._fbModel = new MyFlightBoardModel();
-            this._fbModel.PropertyChanged += _fbModel_PropertyChanged;
-            this._fbModel.start(5400);
+            FlightBoardModelSingelton.Instance.PropertyChanged += _fbModel_PropertyChanged;
+        }
+
+        public void Start(int port)
+        {
+            FlightBoardModelSingelton.Instance.start(port);
+        }
+
+        public void Stop()
+        {
+            FlightBoardModelSingelton.Instance.stop();
         }
 
         protected void _fbModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            string rawData = _fbModel.Data;
+            string rawData = FlightBoardModelSingelton.Instance.Data;
             string[] tokens = rawData.Split(',');
             try
             {
@@ -59,11 +93,5 @@ namespace FlightSimulator.ViewModels
                 Console.WriteLine(exc.Message);
             }
         }
-
-        private void OnClick()
-        {
-            Views.Settings s = new Views.Settings();
-            s.ShowDialog();
-        }
-}
+    }
 }

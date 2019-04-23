@@ -19,25 +19,25 @@
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Margin="10">
             <Button x:Name="Connect"
                 Content="Connect"
-                Click="ClickConnect"
+                Click="Connect_Click"
                 ClickMode="Press"  
                 Margin="0,0,10,0"
                     Height="20"
                     Width="75"
                 HorizontalAlignment="Center"
                 TextElement.FontWeight="Bold"
-                Foreground="Gray"/>
+                Foreground="Gray"
+                Command="{Binding ConnectCommand}"/>
 
             <Button x:Name="Settings"
                     Content="Settings"
-                    Click="ClickSettings"
                     ClickMode="Press"
                     Height="20"
                     TextElement.FontWeight="Bold"
                     Width="75"
                     HorizontalAlignment="Center"
                     Foreground="Gray"
-					Command="{Binding SettingsCommnad}"/>
+					Command="{Binding SettingsCommand}"/>
         </StackPanel>
         <local:FlightBoard HorizontalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="1" Loaded="FlightBoard_Loaded" Margin="10" x:Name="FlightBoardResource"/>
     </Grid>

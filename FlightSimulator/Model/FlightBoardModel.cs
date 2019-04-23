@@ -3,7 +3,7 @@ using System.Net.Sockets;
 
 namespace FlightSimulator.Model
 {
-    public abstract class FlightBoardModel : INotifyPropertyChanged
+    public class FlightBoardModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected string _data;
@@ -17,10 +17,25 @@ namespace FlightSimulator.Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(v));
         }
 
-        abstract protected void _infoChannel_PropertyChanged(object sender, PropertyChangedEventArgs e);
 
-        abstract public void start(int port);
+        public FlightBoardModel()
+        {
+            InfoSingleton.Instance.PropertyChanged += _infoChannel_PropertyChanged;
+        }
 
-        abstract public void stop();
+        protected void _infoChannel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.Data = InfoSingleton.Instance.Data;
+        }
+
+        public void start(int port)
+        {
+            InfoSingleton.Instance.Run(port);
+        }
+
+        public  void stop()
+        {
+            InfoSingleton.Instance.Disconnect();
+        }
     }
 }
