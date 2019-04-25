@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FlightSimulator.ViewModels
 {
@@ -13,12 +14,12 @@ namespace FlightSimulator.ViewModels
         {
             set
             {
+                Console.WriteLine("Enter!!!!");
                 List<string> arg = new List<string>();
                 aileron = value;
                 arg.Add("aileron");
                 arg.Add(aileron.ToString());
-                if (CommandSingleton.Instance.isConnected())
-                    CommandSingleton.Instance.setInfo(arg);
+                CommandSingleton.Instance.setInfo(arg);
             }
             get { return aileron; }
         }
@@ -26,12 +27,12 @@ namespace FlightSimulator.ViewModels
         {
             set
             {
+                Console.WriteLine("Enter!!!!");
                 List<string> arg = new List<string>();
                 rudder = value;
                 arg.Add("rudder");
                 arg.Add(thruttle.ToString());
-                if (CommandSingleton.Instance.isConnected())
-                    CommandSingleton.Instance.setInfo(arg);
+                CommandSingleton.Instance.setInfo(arg);
             }
             get { return rudder; }
         }
@@ -39,12 +40,12 @@ namespace FlightSimulator.ViewModels
         {
             set
             {
+                Console.WriteLine("Enter!!!!");
                 List<string> arg = new List<string>();
                 thruttle = value;
                 arg.Add("thruttle");
                 arg.Add(thruttle.ToString());
-                if (CommandSingleton.Instance.isConnected())
-                    CommandSingleton.Instance.setInfo(arg);
+                CommandSingleton.Instance.setInfo(arg);
             }
             get { return thruttle; }
         }
@@ -52,12 +53,12 @@ namespace FlightSimulator.ViewModels
         {
             set
             {
+                Console.WriteLine("Enter!!!!");
                 List<string> arg = new List<string>();
                 elevator = value;
                 arg.Add("elevator");
                 arg.Add(elevator.ToString());
-                if (CommandSingleton.Instance.isConnected())
-                    CommandSingleton.Instance.setInfo(arg);
+                CommandSingleton.Instance.setInfo(arg);
             }
             get { return elevator; }
         }

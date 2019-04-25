@@ -89,8 +89,7 @@ namespace FlightSimulator.ViewModels
 
         private void sendingData(Queue<String> tokens)
         {
-            if(!CommandSingleton.Instance.isConnected())
-                CommandSingleton.Instance.connectServer();
+            CommandSingleton.Instance.connectServer();
             var timer = new Timer(2000);
             timer.AutoReset = true;
             timer.Elapsed += (sender, e) => OnTimedEvent(sender, e, tokens);

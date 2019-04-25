@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Timers;
 
 namespace FlightSimulator.Model
 {
@@ -38,34 +39,57 @@ namespace FlightSimulator.Model
 
         public void connectServer()
         {
-            IPEndPoint ep = new IPEndPoint(IPAddress.Parse(Properties.Settings.Default.FlightServerIP),
+            if (!isConnected())
+            {
+                IPEndPoint ep = new IPEndPoint(IPAddress.Parse(Properties.Settings.Default.FlightServerIP),
                                                                Properties.Settings.Default.FlightCommandPort);
-            this.server = new TcpListener(ep);
-            this.client = new TcpClient();
-            try
-            {
-                while (!client.Connected)
+                this.server = new TcpListener(ep);
+                this.client = new TcpClient();
+                try
                 {
-                    Console.WriteLine("Sleeping!!!");
-                    Thread.Sleep(2000);
-                    client.Connect(ep);
+                    System.Timers.Timer timer;
+                    while (!client.Connected)
+                    {
+                        timer = new System.Timers.Timer(2000);
+                        timer.AutoReset = true;
+                        timer.Elapsed += (sender, e) => OnTimedEvent(sender, e, ep);
+                        timer.Enabled = true;
+                    }
+                    Console.WriteLine("You are connected!");
+                    this.ns = client.GetStream();
                 }
-                Console.WriteLine("You are connected!");
-                this.ns = client.GetStream();
-            } catch (Exception e)
-            {
-                if (client != null)
-                    client.Close();
-                if (ns != null)
-                    ns.Close();
-                Console.WriteLine(e.Message);
+                catch (Exception e)
+                {
+                    if (client != null)
+                        client.Close();
+                    if (ns != null)
+                        ns.Close();
+                    Console.WriteLine(e.Message);
+                }
             }
         }
 
-        public void setInfo(List<string> path)
+        private void OnTimedEvent(object sender, ElapsedEventArgs e, IPEndPoint ep)
         {
+            if (isConnected())
+            {
+                System.Timers.Timer timer = (System.Timers.Timer)sender; // Get the timer that fired the event
+                timer.Stop(); // Stop the timer that fired the event
+            } else
+            {
+                Console.WriteLine("Trying to connect...");
+                try
+                {
+                    client.Connect(ep);
+                } catch (Exception ex) { };
+            }
+        }
+
+        public void setInfo(List<string> tokens)
+        {
+            CommandSingleton.Instance.connectServer();
             string command = "set ";
-            command += this.SimulatorPath[path[0]] + " " + path[1] + "\r\n";
+            command += this.SimulatorPath[tokens[0]] + " " + tokens[1] + "\r\n";
             Console.WriteLine(command);
             byte[] byteTime = Encoding.ASCII.GetBytes(command.ToString());
             this.ns.Write(byteTime, 0, byteTime.Length);
