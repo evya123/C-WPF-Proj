@@ -10,7 +10,7 @@ namespace FlightSimulator.Views
         public Manual()
         {
             InitializeComponent();
-            this.DataContext = JoysticVMSingelton.Instance;
+            this.DataContext = JoystickVMSingelton.Instance;
         }  
 
     }

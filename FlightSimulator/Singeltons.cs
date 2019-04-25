@@ -85,17 +85,17 @@ namespace FlightSimulator
         }
     }
 
-    public class JoysticVMSingelton
+    public class JoystickVMSingelton
     {
-        private static JoysticVM _instance = null;
+        private static JoystickVM _instance = null;
 
-        public static JoysticVM Instance
+        public static JoystickVM Instance
         {
             private set { }
             get
             {
                 if (_instance == null)
-                    _instance = new JoysticVM();
+                    _instance = new JoystickVM();
                 return _instance;
             }
         }
