@@ -11,17 +11,17 @@ namespace FlightSimulator.Views
         {
             InitializeComponent();
             this.DataContext = MySettingVMSingelton.Instance;
-            MySettingVMSingelton.Instance.CloseRequested += vm_CloseRequested;
+            //MySettingVMSingelton.Instance.CloseRequested += vm_CloseRequested;
 
         }
 
-        private void vm_CloseRequested(object sender, ViewModels.CloseRequestedEventArgs e)
+       /* private void vm_CloseRequested(object sender, ViewModels.Windows.CloseRequestedEventArgs e)
         {
             if (e.DialogResult.HasValue)
                 this.DialogResult = e.DialogResult; // sets the dialog result AND closes the window
             else
                 this.Close();
-        }
+        }*/
 
     }
 }

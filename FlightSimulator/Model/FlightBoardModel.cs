@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Net.Sockets;
 
 namespace FlightSimulator.Model
 {
@@ -30,7 +29,7 @@ namespace FlightSimulator.Model
 
         public void start(int port)
         {
-            InfoSingleton.Instance.Run(port);
+            InfoSingleton.Instance.RunCommand(port);
         }
 
         public  void stop()

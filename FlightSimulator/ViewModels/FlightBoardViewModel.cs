@@ -42,7 +42,7 @@ namespace FlightSimulator.ViewModels
         //###############//
         private void ConnectClicked()
         {
-            InfoSingleton.Instance.Run(ApplicationSettingsModel.Instance.FlightInfoPort);
+            InfoSingleton.Instance.RunCommand(ApplicationSettingsModel.Instance.FlightInfoPort);
         }
         private void SettingsClicked()
         {

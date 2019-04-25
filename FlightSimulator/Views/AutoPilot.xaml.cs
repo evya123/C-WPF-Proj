@@ -13,16 +13,5 @@ namespace FlightSimulator.Views
             InitializeComponent();
             this.DataContext = AutoPilotVMSingelton.Instance;
         }
-
-        private void OK_Click(object sender, RoutedEventArgs e)
-        {
-            //Todo
-
-        }
-
-        private void CLEAR_Click(object sender, RoutedEventArgs e)
-        {
-            //Todo
-        }
     }
 }

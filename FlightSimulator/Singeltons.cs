@@ -21,6 +21,22 @@ namespace FlightSimulator
         }
     }
 
+    public class CommandSingleton
+    {
+        private static Client _instance = null;
+
+        public static Client Instance
+        {
+            private set { }
+            get
+            {
+                if (_instance == null)
+                    _instance = new Client();
+                return _instance;
+            }
+        }
+    }
+
     public class FlightBoardModelSingelton
     {
         private static FlightBoardModel _instance = null;
@@ -103,15 +119,15 @@ namespace FlightSimulator
 
     public class MySettingVMSingelton
     {
-        private static MySettingWindowVM _instance = null;
+        private static SettingsWindowViewModel _instance = null;
 
-        public static MySettingWindowVM Instance
+        public static SettingsWindowViewModel Instance
         {
             private set { }
             get
             {
                 if (_instance == null)
-                    _instance = new MySettingWindowVM(ApplicationSettingsModel.Instance);
+                    _instance = new SettingsWindowViewModel(ApplicationSettingsModel.Instance);
                 return _instance;
             }
         }

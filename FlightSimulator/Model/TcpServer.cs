@@ -1,5 +1,4 @@
-﻿using FlightSimulator.Model;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
@@ -25,7 +24,7 @@ namespace FlightSimulator
                 this.PropertyChanged(this, new PropertyChangedEventArgs(v));
         }
 
-        public void Run(int port)
+        public void RunCommand(int port)
         {
             var listener = new TcpListener(IPAddress.Any, port);
             try
