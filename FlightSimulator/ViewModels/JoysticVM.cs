@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace FlightSimulator.ViewModels
 {
@@ -17,16 +13,25 @@ namespace FlightSimulator.ViewModels
         {
             set
             {
+                List<string> arg = new List<string>();
                 aileron = value;
+                arg.Add("aileron");
+                arg.Add(aileron.ToString());
+                if (CommandSingleton.Instance.isConnected())
+                    CommandSingleton.Instance.setInfo(arg);
             }
             get { return aileron; }
         }
-
         public double Rudder
         {
             set
             {
+                List<string> arg = new List<string>();
                 rudder = value;
+                arg.Add("rudder");
+                arg.Add(thruttle.ToString());
+                if (CommandSingleton.Instance.isConnected())
+                    CommandSingleton.Instance.setInfo(arg);
             }
             get { return rudder; }
         }
@@ -34,19 +39,27 @@ namespace FlightSimulator.ViewModels
         {
             set
             {
+                List<string> arg = new List<string>();
                 thruttle = value;
+                arg.Add("thruttle");
+                arg.Add(thruttle.ToString());
+                if (CommandSingleton.Instance.isConnected())
+                    CommandSingleton.Instance.setInfo(arg);
             }
             get { return thruttle; }
         }
-
         public double Elevator
         {
             set
             {
+                List<string> arg = new List<string>();
                 elevator = value;
+                arg.Add("elevator");
+                arg.Add(elevator.ToString());
+                if (CommandSingleton.Instance.isConnected())
+                    CommandSingleton.Instance.setInfo(arg);
             }
             get { return elevator; }
         }
-
-}
+    }
 }

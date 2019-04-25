@@ -36,6 +36,11 @@ namespace FlightSimulator
                 MainWindowVMSingelton.Instance.ExitCommand.Execute(null);
 
         }
+
+        private void TabControl_Loaded_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 
