@@ -32,7 +32,9 @@ namespace FlightSimulator.Model
             try
             {
                 return client.Connected;
+#pragma warning disable CS0168 // The variable 'e' is declared but never used
             } catch (Exception e) {
+#pragma warning restore CS0168 // The variable 'e' is declared but never used
                 return false;
             }
         }
@@ -81,7 +83,9 @@ namespace FlightSimulator.Model
                 try
                 {
                     client.Connect(ep);
+#pragma warning disable CS0168 // The variable 'ex' is declared but never used
                 } catch (Exception ex) { };
+#pragma warning restore CS0168 // The variable 'ex' is declared but never used
             }
         }
 
