@@ -14,11 +14,6 @@ namespace FlightSimulator
             InitializeComponent();
         }
 
-        private void TabControl_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             const string message = "Are you sure that you would like to close the form?" ;
@@ -34,11 +29,6 @@ namespace FlightSimulator
                 e.Cancel = true;
             } else
                 MainWindowVMSingelton.Instance.ExitCommand.Execute(null);
-
-        }
-
-        private void TabControl_Loaded_1(object sender, RoutedEventArgs e)
-        {
 
         }
     }
