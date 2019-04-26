@@ -1,5 +1,4 @@
 ﻿using FlightSimulator.ViewModels;
-using System;
 
 namespace FlightSimulator.Model
 {
@@ -14,7 +13,7 @@ namespace FlightSimulator.Model
             }
             get => _exitHandler ?? (_exitHandler = new CommandHandler(() =>
             {
-                FlightBoardVMSingelton.Instance.ExitCommand.Execute(null);
+                FlightBoardVMSingelton.Instance.Stop();
                 System.Windows.Application.Current.Shutdown();
             }));
         }

@@ -32,7 +32,7 @@ namespace FlightSimulator.Model
             InfoSingleton.Instance.RunCommand(port);
         }
 
-        public  void stop()
+        public void Stop()
         {
             InfoSingleton.Instance.Disconnect();
         }

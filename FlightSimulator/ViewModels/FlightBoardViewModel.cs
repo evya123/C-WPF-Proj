@@ -6,19 +6,6 @@ namespace FlightSimulator.ViewModels
 {
     public class FlightBoardViewModel : BaseNotify
     {
-        private CommandHandler _exitHandler;
-        public CommandHandler ExitCommand
-        {
-            private set
-            {
-
-            }
-            get => _exitHandler ?? (_exitHandler = new CommandHandler(() =>
-            {
-                Stop();
-            }));
-        }
-
         //###############//
         private ICommand _settingCommand;
         public ICommand SettingsCommand
@@ -43,6 +30,7 @@ namespace FlightSimulator.ViewModels
         private void ConnectClicked()
         {
             InfoSingleton.Instance.RunCommand(ApplicationSettingsModel.Instance.FlightInfoPort);
+            CommandSingleton.Instance.Start();
         }
         private void SettingsClicked()
         {
@@ -77,7 +65,8 @@ namespace FlightSimulator.ViewModels
 
         public void Stop()
         {
-            FlightBoardModelSingelton.Instance.stop();
+            FlightBoardModelSingelton.Instance.Stop();
+            CommandSingleton.Instance.Stop();
         }
 
         protected void _fbModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

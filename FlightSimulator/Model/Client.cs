@@ -19,52 +19,23 @@ namespace FlightSimulator.Model
         private Timer timer;
         private NetworkStream ns;
         private TcpClient client;
-        private TcpListener server;
         private IPEndPoint ep;
 
         public Client()
         {
             ep = new IPEndPoint(IPAddress.Parse(Properties.Settings.Default.FlightServerIP),
                                                                Properties.Settings.Default.FlightCommandPort);
-            this.server = new TcpListener(ep);
             this.client = new TcpClient();
+
+            timer = new Timer(2000);
+            timer.AutoReset = true;
+            timer.Elapsed += (sender, e) => OnTimedEvent(sender, e, ep);
 
             this.SimulatorPath.Add("aileron", "/controls/flight/aileron");
             this.SimulatorPath.Add("elevator", "/controls/flight/elevator");
             this.SimulatorPath.Add("rudder", "/controls/flight/rudder");
             this.SimulatorPath.Add("throttle", "/controls/engines/current-engine/throttle");
         }
-
-        public Boolean isConnected()
-        {
-            try
-            {
-                return client.Connected;
-#pragma warning disable CS0168 // The variable 'e' is declared but never used
-            } catch (Exception e) {
-#pragma warning restore CS0168 // The variable 'e' is declared but never used
-                return false;
-            }
-        }
-
-        public void setServerEvent()
-        {
-                try
-                {      
-                    timer = new Timer(2000);
-                    timer.AutoReset = true;
-                    timer.Elapsed += (sender, e) => OnTimedEvent(sender, e, ep);
-                }
-                catch (Exception e)
-                {
-                    if (client != null)
-                        client.Close();
-                    if (ns != null)
-                        ns.Close();
-                    Console.WriteLine(e.Message);
-                }
-        }
-
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e, IPEndPoint ep)
         {
@@ -87,28 +58,23 @@ namespace FlightSimulator.Model
             }
         }
 
+        public void Start() { this.timer.Start(); }
+
         public void setInfo(List<string> tokens)
         {
             
             if ((TcpHelper.GetState(this.client) != TcpState.Closed) &&
                 (TcpHelper.GetState(this.client) != TcpState.Unknown))
             {
-                Console.WriteLine("State is: "+TcpHelper.GetState(this.client).ToString());
                 string command = "set ";
                 command += this.SimulatorPath[tokens[0]] + " " + tokens[1] + "\r\n";
-                Console.WriteLine(command);
                 byte[] byteTime = Encoding.ASCII.GetBytes(command.ToString());
                 this.ns.Write(byteTime, 0, byteTime.Length);
-            } else
-            {
-                CommandSingleton.Instance.setServerEvent();
-                timer.Start();
             }
         }
 
         public void sendAutoData(String command)
         {
-            CommandSingleton.Instance.setServerEvent();
             if ((TcpHelper.GetState(this.client) != TcpState.Closed) &&
                 (TcpHelper.GetState(this.client) != TcpState.Unknown))
             {
@@ -117,24 +83,23 @@ namespace FlightSimulator.Model
                     using (NetworkStream stream = new NetworkStream(this.client.Client, false))
                     using (BinaryWriter writer = new BinaryWriter(stream))
                     {
-                        byte[] data = Encoding.ASCII.GetBytes(command);
+                        byte[] data = Encoding.ASCII.GetBytes((command+"\r\n"));
                         Console.WriteLine(command);
                         writer.Write(data);
                         writer.Flush();
                     }
                 }
-            } else
-            {
-                CommandSingleton.Instance.setServerEvent();
-                timer.Start();
             }
         }
 
         /*close the connection to the server*/
-        public void close()
+        public void Stop()
         {
-            this.client.Close();
-            this.server.Stop();
+            if (TcpHelper.GetState(this.client) == TcpState.Established)
+            {
+                this.client.Close();
+                this.client.Dispose();
+            }
         }
     }
 }
