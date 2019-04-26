@@ -14,7 +14,6 @@ namespace FlightSimulator.ViewModels
         {
             set
             {
-                Console.WriteLine("Enter!!!!");
                 List<string> arg = new List<string>();
                 aileron = value;
                 arg.Add("aileron");
@@ -27,7 +26,6 @@ namespace FlightSimulator.ViewModels
         {
             set
             {
-                Console.WriteLine("Enter!!!!");
                 List<string> arg = new List<string>();
                 rudder = value;
                 arg.Add("rudder");
@@ -40,7 +38,6 @@ namespace FlightSimulator.ViewModels
         {
             set
             {
-                Console.WriteLine("Enter!!!!");
                 List<string> arg = new List<string>();
                 throttle = value;
                 arg.Add("throttle");
@@ -53,7 +50,6 @@ namespace FlightSimulator.ViewModels
         {
             set
             {
-                Console.WriteLine("Enter!!!!");
                 List<string> arg = new List<string>();
                 elevator = value;
                 arg.Add("elevator");

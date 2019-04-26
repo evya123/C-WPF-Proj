@@ -11,7 +11,6 @@ namespace FlightSimulator.Views
         {
             InitializeComponent();
             this.DataContext = JoystickVMSingelton.Instance;
-        }  
-
+        }
     }
 }
