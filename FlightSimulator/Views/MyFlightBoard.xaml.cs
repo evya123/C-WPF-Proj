@@ -17,12 +17,6 @@ namespace FlightSimulator.Views
             this.DataContext = FlightBoardVMSingelton.Instance;
         }
 
-
-        private void FlightBoard_Loaded(object sender, RoutedEventArgs e)
-        {
-            //TODO
-        }
-
         private void Connect_Click(object sender, RoutedEventArgs e)
         {
             Connect.IsEnabled = false;

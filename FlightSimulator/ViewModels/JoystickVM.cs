@@ -7,7 +7,7 @@ namespace FlightSimulator.ViewModels
     {
         private double aileron = 0;
         private double rudder = 0;
-        private double thruttle = 0;
+        private double throttle = 0;
         private double elevator = 0;
 
         public double Aileron
@@ -31,23 +31,23 @@ namespace FlightSimulator.ViewModels
                 List<string> arg = new List<string>();
                 rudder = value;
                 arg.Add("rudder");
-                arg.Add(thruttle.ToString());
+                arg.Add(rudder.ToString());
                 CommandSingleton.Instance.setInfo(arg);
             }
             get { return rudder; }
         }
-        public double Thruttle
+        public double Throttle
         {
             set
             {
                 Console.WriteLine("Enter!!!!");
                 List<string> arg = new List<string>();
-                thruttle = value;
-                arg.Add("thruttle");
-                arg.Add(thruttle.ToString());
+                throttle = value;
+                arg.Add("throttle");
+                arg.Add(throttle.ToString());
                 CommandSingleton.Instance.setInfo(arg);
             }
-            get { return thruttle; }
+            get { return throttle; }
         }
         public double Elevator
         {
