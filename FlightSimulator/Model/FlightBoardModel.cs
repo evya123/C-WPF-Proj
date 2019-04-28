@@ -28,14 +28,14 @@ namespace FlightSimulator.Model
             this.Data = InfoSingleton.Instance.Data;
         }
 
-        public void start(int port)
+        public void Start(int port)
         {
             InfoSingleton.Instance.RunCommand(port);
         }
 
         public void Stop()
         {
-            InfoSingleton.Instance.Disconnect();
+            //InfoSingleton.Instance.Disconnect();
         }
     }
 }

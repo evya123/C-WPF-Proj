@@ -10,10 +10,7 @@ namespace FlightSimulator
 {
     public class TcpServer : INotifyPropertyChanged
     {
-        private TcpClient tcpclient = null;
-        private NetworkStream netstream = null;
-        private TcpListener listener = null;
-        private CancellationTokenSource cts = null;
+        private int port;  
         private Thread thread = null;
         private string _data;
         //Notify about data from the simulator
@@ -25,27 +22,20 @@ namespace FlightSimulator
         //Main method for running server. start's listening and set the parameters for the thread.
         public void RunCommand(int port)
         {
-            // listner to connect
-            listener = new TcpListener(IPAddress.Any, port);
-            cts = new CancellationTokenSource();
+            this.port = port;
             try
             {
                 // open the thread that the commands will be on a different thread
-                thread= new Thread(new ParameterizedThreadStart(paradicat));
+                thread= new Thread(paradicat);
                 thread.IsBackground = true;
-                thread.Start(cts.Token);
+                thread.Start();
             } catch (Exception e)
             {
-                Disconnect();
                 Console.WriteLine(e.Message);
-            }
-            finally
-            {
-                Disconnect();
             }
         }
         //Disconnecting from server
-        public void Disconnect()
+       /* public void Disconnect()
         {
             if (netstream != null)
             {
@@ -56,39 +46,44 @@ namespace FlightSimulator
             {
                 tcpclient.Close();
                 tcpclient.Dispose();
-            }
-        }
+            } 
+        }*/
         //Mathod for getting data from client
         private void paradicat(object obj)
         {
+            TcpClient tcpclient = null;
+            NetworkStream netstream = null;
+            var listener = new TcpListener(IPAddress.Any, port);
             listener.Start();
             tcpclient = listener.AcceptTcpClient();
             netstream = tcpclient.GetStream();
             Console.WriteLine("The simulator is connected!");
-            var responsewriter = new StreamWriter(netstream) { AutoFlush = true };
             while (true)
             {
-                if (TcpHelper.GetState(tcpclient) == System.Net.NetworkInformation.TcpState.Closed)
-                {
-                    Disconnect();
-                    if (cts.Token.CanBeCanceled)
-                        cts.Cancel();
-                    Console.WriteLine("Client disconnected gracefully");
-                    break;
-                }
-
                 try
                 {
-                    if (netstream.DataAvailable)// handle scenario where client is not done yet, and DataAvailable is false. This is not part of the tcp protocol.
+                    if (TcpHelper.GetState(tcpclient) == System.Net.NetworkInformation.TcpState.Closed)
                     {
-                        Data = Read(netstream);
+                    Console.WriteLine("Client disconnected gracefully");
+                    break;
                     }
-                } catch (ObjectDisposedException)
+
+                
+                    Data = Read(netstream);
+                }
+                catch (ObjectDisposedException)
                 {
                     Console.WriteLine("netstream has died");
                 }
             }
+
+            tcpclient.Close();
+            netstream.Close();
+            listener.Stop();
+            tcpclient.Dispose();
+            netstream.Dispose();
         }
+
         //check if the tcp connection is closed
         private bool IsDisconnected(TcpClient tcp)
         {

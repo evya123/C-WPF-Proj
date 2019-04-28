@@ -58,11 +58,6 @@ namespace FlightSimulator.ViewModels
             FlightBoardModelSingelton.Instance.PropertyChanged += _fbModel_PropertyChanged;
         }
 
-        public void Start(int port)
-        {
-            FlightBoardModelSingelton.Instance.start(port);
-        }
-
         public void Stop()
         {
             FlightBoardModelSingelton.Instance.Stop();

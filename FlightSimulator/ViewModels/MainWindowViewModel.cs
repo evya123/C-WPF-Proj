@@ -13,9 +13,14 @@ namespace FlightSimulator.Model
             }
             get => _exitHandler ?? (_exitHandler = new CommandHandler(() =>
             {
-                FlightBoardVMSingelton.Instance.Stop();
+                System.Windows.Application.Current.Exit += Current_Exit;
                 System.Windows.Application.Current.Shutdown();
             }));
+        }
+
+        private void Current_Exit(object sender, System.Windows.ExitEventArgs e)
+        {
+            FlightBoardVMSingelton.Instance.Stop();
         }
     }
 }
