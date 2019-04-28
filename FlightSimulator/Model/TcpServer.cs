@@ -16,13 +16,13 @@ namespace FlightSimulator
         private CancellationTokenSource cts = null;
         private Thread thread = null;
         private string _data;
-
+        //Notify about data from the simulator
         public string Data {
             get { return _data; }
             set { _data = value; NotifyPropertyChanged("Data"); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
+        //Main method for running server. start's listening and set the parameters for the thread.
         public void RunCommand(int port)
         {
             // listner to connect
@@ -44,7 +44,7 @@ namespace FlightSimulator
                 Disconnect();
             }
         }
-        
+        //Disconnecting from server
         public void Disconnect()
         {
             if (netstream != null)
@@ -59,7 +59,7 @@ namespace FlightSimulator
             }
             cts.Cancel();
         }
-
+        //Mathod for getting data from client
         private void paradicat(object obj)
         {
             listener.Start();
@@ -69,20 +69,27 @@ namespace FlightSimulator
             var responsewriter = new StreamWriter(netstream) { AutoFlush = true };
             while (true)
             {
-                if (IsDisconnected(tcpclient))
+                if (TcpHelper.GetState(tcpclient) == System.Net.NetworkInformation.TcpState.Closed)
                 {
                     Disconnect();
                         cts.Cancel();
                     Console.WriteLine("Client disconnected gracefully");
                     break;
                 }
-                if (netstream.DataAvailable)             // handle scenario where client is not done yet, and DataAvailable is false. This is not part of the tcp protocol.
+
+                try
                 {
-                    Data = Read(netstream);
+                    if (netstream.DataAvailable)// handle scenario where client is not done yet, and DataAvailable is false. This is not part of the tcp protocol.
+                    {
+                        Data = Read(netstream);
+                    }
+                } catch (ObjectDisposedException)
+                {
+                    Console.WriteLine("netstream has died");
                 }
             }
         }
-
+        //check if the tcp connection is closed
         private bool IsDisconnected(TcpClient tcp)
         {
             if (tcp.Client.Poll(0, SelectMode.SelectRead))
@@ -99,7 +106,7 @@ namespace FlightSimulator
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(v));
         }
-
+        //Read data stream and decode is
         private string Read(NetworkStream netstream)
         {
             byte[] buffer = new byte[1024];

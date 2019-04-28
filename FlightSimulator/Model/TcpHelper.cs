@@ -5,9 +5,10 @@ using System.Net.Sockets;
 
 namespace FlightSimulator.Model
 {
+    //Helper must always be static
     public static class TcpHelper
     {
-
+        //Check the tcp state
         public static TcpState GetState(this TcpClient tcpClient)
         {
             var foo = IPGlobalProperties.GetIPGlobalProperties()

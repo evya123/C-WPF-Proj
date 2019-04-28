@@ -36,7 +36,7 @@ namespace FlightSimulator.Model
             this.SimulatorPath.Add("rudder", "/controls/flight/rudder");
             this.SimulatorPath.Add("throttle", "/controls/engines/current-engine/throttle");
         }
-
+        //Timed event for try connecting to server. After connection is established, worker thread exits.
         private void OnTimedEvent(object sender, ElapsedEventArgs e, IPEndPoint ep)
         {
             if ((TcpHelper.GetState(this.client) != TcpState.Closed) &&
@@ -57,12 +57,11 @@ namespace FlightSimulator.Model
 #pragma warning restore CS0168 // The variable 'ex' is declared but never used
             }
         }
-
+        //firing the timer event
         public void Start() { this.timer.Start(); }
-
+        //method for sending data from joystick
         public void setInfo(List<string> tokens)
         {
-            
             if ((TcpHelper.GetState(this.client) != TcpState.Closed) &&
                 (TcpHelper.GetState(this.client) != TcpState.Unknown))
             {
@@ -72,7 +71,7 @@ namespace FlightSimulator.Model
                 this.ns.Write(byteTime, 0, byteTime.Length);
             }
         }
-
+        //send ddata from autopilot
         public void sendAutoData(String command)
         {
             if ((TcpHelper.GetState(this.client) != TcpState.Closed) &&
