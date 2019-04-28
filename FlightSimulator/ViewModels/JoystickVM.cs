@@ -9,7 +9,7 @@ namespace FlightSimulator.ViewModels
         private double rudder = 0;
         private double throttle = 0;
         private double elevator = 0;
-
+        /*for all the 4 parameters - add to arg and make singleton*/
         public double Aileron
         {
             set

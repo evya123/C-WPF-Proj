@@ -25,10 +25,12 @@ namespace FlightSimulator
 
         public void RunCommand(int port)
         {
+            // listner to connect
             listener = new TcpListener(IPAddress.Any, port);
             cts = new CancellationTokenSource();
             try
             {
+                // open the thread that the commands will be on a different thread
                 thread= new Thread(new ParameterizedThreadStart(paradicat));
                 thread.IsBackground = true;
                 thread.Start(cts.Token);

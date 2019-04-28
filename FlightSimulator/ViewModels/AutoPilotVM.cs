@@ -16,7 +16,8 @@ namespace FlightSimulator.ViewModels
         private String color;
         private String data = "";
         private String blank = "";
-
+        /**
+         change the color of the Autopilot board*/
         public String ChangeColor
         {
             get
@@ -32,6 +33,7 @@ namespace FlightSimulator.ViewModels
                 return color;
             }
         }
+        /*get the commands from the user and do the notify*/
         public String CommandsFromUser
         {
             set
@@ -54,11 +56,12 @@ namespace FlightSimulator.ViewModels
             
         }
 
+        /*on click of clear - clear the Autopilot board*/
         public void OnClick()
         {
             blank = "";
         }
-
+        /*clear command*/
         public ICommand clearCommand
         {
             get
@@ -78,6 +81,7 @@ namespace FlightSimulator.ViewModels
                 return _okC ?? (_okC = new CommandHandler(() => parseCommands()));
             }
         }
+        /*parse the commands to tokens and send the tokens*/
         private void parseCommands()
         {
             String[] allCommands = data.Split(new String[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -87,9 +91,10 @@ namespace FlightSimulator.ViewModels
             sendingData(tokens);
         }
 
+        /*sending the data to the simulatur*/
         private void sendingData(Queue<String> tokens)
         {
-            var timer = new Timer(2000);
+            var timer = new Timer(2000); // send every 2 seconds
             timer.AutoReset = true;
             timer.Elapsed += (sender, e) => OnTimedEvent(sender, e, tokens);
             if (tokens.Count != 0)

@@ -75,6 +75,7 @@ namespace FlightSimulator.ViewModels
             string[] tokens = rawData.Split(',');
             try
             {
+                // parse the lon and the lat
                 Lon = Double.Parse(tokens[1]);
                 Lat = Double.Parse(tokens[2]);
             } catch (Exception exc)

@@ -13,6 +13,7 @@ namespace FlightSimulator.Model
         }
         protected void NotifyPropertyChanged(string v)
         {
+            // invoke when property change in the flight board
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(v));
         }
 

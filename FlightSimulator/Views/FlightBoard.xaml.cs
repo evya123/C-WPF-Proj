@@ -29,7 +29,7 @@ namespace FlightSimulator.Views
 
         public void Vm_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName.Equals("Lat") || e.PropertyName.Equals("Lon"))
+            if(e.PropertyName.Equals("Lat") || e.PropertyName.Equals("Lon")) //set the lon and lat to the map
             {
                 var _fbViewModel = sender as FlightBoardViewModel;
                 Point p1 = new Point(_fbViewModel.Lon,_fbViewModel.Lat);            // Fill here!
