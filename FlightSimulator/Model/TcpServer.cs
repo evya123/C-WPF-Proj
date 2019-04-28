@@ -71,7 +71,8 @@ namespace FlightSimulator
                 if (TcpHelper.GetState(tcpclient) == System.Net.NetworkInformation.TcpState.Closed)
                 {
                     Disconnect();
-                    cts.Cancel();
+                    if (cts.Token.CanBeCanceled)
+                        cts.Cancel();
                     Console.WriteLine("Client disconnected gracefully");
                     break;
                 }
