@@ -57,7 +57,6 @@ namespace FlightSimulator
                 tcpclient.Close();
                 tcpclient.Dispose();
             }
-            cts.Cancel();
         }
         //Mathod for getting data from client
         private void paradicat(object obj)
@@ -72,7 +71,7 @@ namespace FlightSimulator
                 if (TcpHelper.GetState(tcpclient) == System.Net.NetworkInformation.TcpState.Closed)
                 {
                     Disconnect();
-                        cts.Cancel();
+                    cts.Cancel();
                     Console.WriteLine("Client disconnected gracefully");
                     break;
                 }
