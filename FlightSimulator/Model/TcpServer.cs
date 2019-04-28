@@ -30,6 +30,7 @@ namespace FlightSimulator
             try
             {
                 thread= new Thread(new ParameterizedThreadStart(paradicat));
+                thread.IsBackground = true;
                 thread.Start(cts.Token);
             } catch (Exception e)
             {
@@ -54,7 +55,7 @@ namespace FlightSimulator
                 tcpclient.Close();
                 tcpclient.Dispose();
             }
-            cts.Dispose();
+            cts.Cancel();
         }
 
         private void paradicat(object obj)
